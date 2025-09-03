@@ -199,21 +199,36 @@ if(count($all_books) > 0) {
         </section>
         
         <!-- Library Statistics -->
-        <div class="stats-grid">
-            <div class="stat-card">
-                <h3>Total Books</h3>
-                <p class="stat-number"><?php echo count($all_books); ?></p>
-            </div>
-            <div class="stat-card">
-                <h3>Categories</h3>
-                <p class="stat-number">12+</p>
-            </div>
-            <div class="stat-card">
-                <h3>Available Books</h3>
-                <p class="stat-number"><?php echo count($all_books); ?></p>
-            </div>
-        </div>
-        
+       
+<div class="stats-grid">
+    <div class="stat-card">
+        <h3>Total Books</h3>
+        <p class="stat-number"><?php 
+            $total_books = 0;
+            foreach($all_books as $book) {
+                $total_books += $book['total_copies'];
+            }
+            echo $total_books; 
+        ?></p>
+    </div>
+    <div class="stat-card">
+        <h3>Available Books</h3>
+        <p class="stat-number"><?php 
+            $available_books = 0;
+            foreach($all_books as $book) {
+                $available_books += $book['available_copies'];
+            }
+            echo $available_books; 
+        ?></p>
+    </div>
+    <div class="stat-card">
+        <h3>Borrowed Books</h3>
+        <p class="stat-number"><?php 
+            $borrowed_books = $total_books - $available_books;
+            echo $borrowed_books; 
+        ?></p>
+    </div>
+</div>
         <section class="featured-books">
             <h2>Featured Books</h2>
             <div class="book-grid">

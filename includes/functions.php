@@ -193,111 +193,112 @@ public function sendOverdueNotifications() {
     }
     
     // Borrow a book
-    public function borrowBook($student_id, $book_id) {
-        try {
-            // Check if student has already borrowed this book and not returned it
-            $query = "SELECT id FROM borrows WHERE student_id = :student_id AND book_id = :book_id AND status != 'returned'";
-            $stmt = $this->conn->prepare($query);
-            $stmt->bindParam(':student_id', $student_id);
-            $stmt->bindParam(':book_id', $book_id);
-            $stmt->execute();
-            
-            if($stmt->rowCount() > 0) {
-                return "already_borrowed";
-            }
-            
-            // Check if book is available
-            $query = "SELECT available_copies FROM books WHERE id = :book_id";
-            $stmt = $this->conn->prepare($query);
-            $stmt->bindParam(':book_id', $book_id);
-            $stmt->execute();
-            
-            $book = $stmt->fetch(PDO::FETCH_ASSOC);
-            
-            if($book['available_copies'] < 1) {
-                return "not_available";
-            }
-            
-            // Calculate due date (14 days from today)
-            $borrow_date = date('Y-m-d');
-            $due_date = date('Y-m-d', strtotime('+14 days'));
-            
-            // Start transaction
-            $this->conn->beginTransaction();
-            
-            // Insert borrow record
-            $query = "INSERT INTO borrows (student_id, book_id, borrow_date, due_date) 
-                      VALUES (:student_id, :book_id, :borrow_date, :due_date)";
-            $stmt = $this->conn->prepare($query);
-            $stmt->bindParam(':student_id', $student_id);
-            $stmt->bindParam(':book_id', $book_id);
-            $stmt->bindParam(':borrow_date', $borrow_date);
-            $stmt->bindParam(':due_date', $due_date);
-            $stmt->execute();
-            
-            // Update available copies
-            $query = "UPDATE books SET available_copies = available_copies - 1 WHERE id = :book_id";
-            $stmt = $this->conn->prepare($query);
-            $stmt->bindParam(':book_id', $book_id);
-            $stmt->execute();
-            
-            // Commit transaction
-            $this->conn->commit();
-            
-            return "success";
-        } catch(PDOException $e) {
-            $this->conn->rollBack();
-            echo "Error: " . $e->getMessage();
-            return "error";
+    // Update the borrowBook method in includes/functions.php
+public function borrowBook($student_id, $book_id) {
+    try {
+        // Check if student has already borrowed this book and not returned it
+        $query = "SELECT id FROM borrows WHERE student_id = :student_id AND book_id = :book_id AND status != 'returned'";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':student_id', $student_id);
+        $stmt->bindParam(':book_id', $book_id);
+        $stmt->execute();
+        
+        if($stmt->rowCount() > 0) {
+            return "already_borrowed";
         }
+        
+        // Check if book is available
+        $query = "SELECT available_copies, total_copies FROM books WHERE id = :book_id";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':book_id', $book_id);
+        $stmt->execute();
+        
+        $book = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        if($book['available_copies'] < 1) {
+            return "not_available";
+        }
+        
+        // Calculate due date (14 days from today)
+        $borrow_date = date('Y-m-d');
+        $due_date = date('Y-m-d', strtotime('+14 days'));
+        
+        // Start transaction
+        $this->conn->beginTransaction();
+        
+        // Insert borrow record
+        $query = "INSERT INTO borrows (student_id, book_id, borrow_date, due_date) 
+                  VALUES (:student_id, :book_id, :borrow_date, :due_date)";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':student_id', $student_id);
+        $stmt->bindParam(':book_id', $book_id);
+        $stmt->bindParam(':borrow_date', $borrow_date);
+        $stmt->bindParam(':due_date', $due_date);
+        $stmt->execute();
+        
+        // Update available copies - DECREASE available copies
+        $query = "UPDATE books SET available_copies = available_copies - 1 WHERE id = :book_id";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':book_id', $book_id);
+        $stmt->execute();
+        
+        // Commit transaction
+        $this->conn->commit();
+        
+        return "success";
+    } catch(PDOException $e) {
+        $this->conn->rollBack();
+        error_log("Borrow Book Error: " . $e->getMessage());
+        return "error";
     }
+}
     
     // Return a book
-    public function returnBook($borrow_id) {
-        try {
-            // Get borrow record
-            $query = "SELECT * FROM borrows WHERE id = :borrow_id";
-            $stmt = $this->conn->prepare($query);
-            $stmt->bindParam(':borrow_id', $borrow_id);
-            $stmt->execute();
-            
-            $borrow = $stmt->fetch(PDO::FETCH_ASSOC);
-            
-            if(!$borrow) {
-                return "not_found";
-            }
-            
-            // Start transaction
-            $this->conn->beginTransaction();
-            
-            // Update borrow record
-            $return_date = date('Y-m-d');
-            $status = 'returned';
-            
-            $query = "UPDATE borrows SET return_date = :return_date, status = :status WHERE id = :borrow_id";
-            $stmt = $this->conn->prepare($query);
-            $stmt->bindParam(':return_date', $return_date);
-            $stmt->bindParam(':status', $status);
-            $stmt->bindParam(':borrow_id', $borrow_id);
-            $stmt->execute();
-            
-            // Update available copies
-            $query = "UPDATE books SET available_copies = available_copies + 1 WHERE id = :book_id";
-            $stmt = $this->conn->prepare($query);
-            $stmt->bindParam(':book_id', $borrow['book_id']);
-            $stmt->execute();
-            
-            // Commit transaction
-            $this->conn->commit();
-            
-            return "success";
-        } catch(PDOException $e) {
-            $this->conn->rollBack();
-            echo "Error: " . $e->getMessage();
-            return "error";
+    // Update the returnBook method in includes/functions.php
+public function returnBook($borrow_id) {
+    try {
+        // Get borrow record
+        $query = "SELECT * FROM borrows WHERE id = :borrow_id";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':borrow_id', $borrow_id);
+        $stmt->execute();
+        
+        $borrow = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        if(!$borrow) {
+            return "not_found";
         }
+        
+        // Start transaction
+        $this->conn->beginTransaction();
+        
+        // Update borrow record
+        $return_date = date('Y-m-d');
+        $status = 'returned';
+        
+        $query = "UPDATE borrows SET return_date = :return_date, status = :status WHERE id = :borrow_id";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':return_date', $return_date);
+        $stmt->bindParam(':status', $status);
+        $stmt->bindParam(':borrow_id', $borrow_id);
+        $stmt->execute();
+        
+        // Update available copies - INCREASE available copies
+        $query = "UPDATE books SET available_copies = available_copies + 1 WHERE id = :book_id";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':book_id', $borrow['book_id']);
+        $stmt->execute();
+        
+        // Commit transaction
+        $this->conn->commit();
+        
+        return "success";
+    } catch(PDOException $e) {
+        $this->conn->rollBack();
+        error_log("Return Book Error: " . $e->getMessage());
+        return "error";
     }
-    
+}
     // Get borrowed books by student
     public function getBorrowedBooks($student_id) {
         try {
