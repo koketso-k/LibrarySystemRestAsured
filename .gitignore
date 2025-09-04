@@ -1,0 +1,229 @@
+# Library Management System - .gitignore
+
+# ===========================================
+# Configuration Files
+# ===========================================
+# Database configuration (contains sensitive data)
+includes/config.php
+.env
+.env.local
+.env.production
+.env.staging
+
+# ===========================================
+# Logs and Debug Files
+# ===========================================
+*.log
+logs/
+debug/
+error_log
+access_log
+php_errors.log
+
+# ===========================================
+# Temporary Files
+# ===========================================
+*.tmp
+*.temp
+*.cache
+cache/
+temp/
+tmp/
+
+# ===========================================
+# IDE and Editor Files
+# ===========================================
+# Visual Studio Code
+.vscode/
+*.code-workspace
+
+# PHPStorm/IntelliJ
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Vim
+*.swp
+*.swo
+*~
+
+# Emacs
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+auto-save-list
+tramp
+.\#*
+
+# ===========================================
+# Operating System Files
+# ===========================================
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+
+# ===========================================
+# Backup and Archive Files
+# ===========================================
+*.bak
+*.backup
+*.old
+*.orig
+*.save
+*.sql.bak
+*.php.bak
+*.css.bak
+*.js.bak
+
+# ===========================================
+# Database Files
+# ===========================================
+*.sqlite
+*.sqlite3
+*.db
+database/backup/
+database/dumps/
+
+# ===========================================
+# Upload and User Content
+# ===========================================
+uploads/
+user_uploads/
+images/uploads/
+files/uploads/
+documents/
+
+# ===========================================
+# Session Files
+# ===========================================
+sessions/
+session/
+*.sess
+
+# ===========================================
+# Composer (if added later)
+# ===========================================
+vendor/
+composer.lock
+composer.phar
+
+# ===========================================
+# Node.js (if added later)
+# ===========================================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+yarn.lock
+
+# ===========================================
+# Testing and Coverage
+# ===========================================
+coverage/
+phpunit.xml
+.phpunit.result.cache
+test-results/
+coverage-reports/
+
+# ===========================================
+# Build and Dist Files
+# ===========================================
+dist/
+build/
+*.min.js
+*.min.css
+*.map
+
+# ===========================================
+# Security and Sensitive Files
+# ===========================================
+*.key
+*.pem
+*.crt
+*.p12
+*.pfx
+secrets/
+private/
+keys/
+
+# ===========================================
+# Application Specific
+# ===========================================
+# Library system specific files
+library_export_*.csv
+library_export_*.xlsx
+overdue_reports_*.pdf
+reminder_logs_*.txt
+
+# ===========================================
+# Development Tools
+# ===========================================
+# PHPUnit
+.phpunit.cache/
+
+# PHP CS Fixer
+.php-cs-fixer.cache
+.php-cs-fixer.php
+
+# PHPStan
+.phpstan.result.cache
+
+# ===========================================
+# Docker (if containerized later)
+# ===========================================
+docker-compose.override.yml
+.dockerignore
+
+# ===========================================
+# Documentation Build
+# ===========================================
+docs/build/
+docs/_build/
+site/
+
+# ===========================================
+# Misc
+# ===========================================
+*.pid
+*.seed
+*.pid.lock
+.npm
+.eslintcache
+.stylelintcache
