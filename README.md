@@ -252,21 +252,57 @@ CREATE TABLE borrowings (
 ## 📁 Project Structure
 
 ```
-digital-library-management/
-├── api/                    # API endpoints
-│   ├── auth/              # Authentication endpoints
-│   ├── books/             # Book management endpoints
-│   └── borrowings/        # Borrowing endpoints
-├── config/                # Configuration files
-├── database/              # Database schema and migrations
-├── public/                # Public assets (CSS, JS, images)
-├── src/                   # PHP classes and core logic
-├── templates/             # HTML templates
-├── tests/                 # PHPUnit test files
-├── vendor/                # Composer dependencies
-├── .htaccess             # Apache configuration
-├── composer.json         # PHP dependencies
-└── index.php             # Application entry point
+library-system/
+├── 📁 admin/                          # Admin panel files
+│   ├── 📄 add_book.php                # Add new books
+│   ├── 📄 dashboard.php               # Admin dashboard
+│   ├── 📄 edit_book.php               # Edit existing books
+│   ├── 📄 export_overdue.php          # Export overdue reports
+│   ├── 📄 logout.php                  # Admin logout
+│   ├── 📄 manage_books.php            # Book management interface
+│   ├── 📄 overdue_reports.php         # Overdue books reports
+│   ├── 📄 send_reminders.php          # Send due date reminders
+│   └── 📄 view_borrowed.php           # View all borrowed books
+│
+├── 📁 api/                            # REST API endpoints
+│   ├── 📄 books.php                   # Book CRUD operations
+│   ├── 📄 borrow.php                  # Borrowing operations
+│   └── 📄 returns.php                 # Return operations
+│
+├── 📁 assets/                         # Static assets
+│   ├── 📁 css/
+│   │   └── 📄 style.css               # Main stylesheet
+│   └── 📁 js/
+│       └── 📄 script.js               # Client-side JavaScript
+│
+├── 📁 database/                       # Database files
+│   └── 📄 library_db.sql             # Database schema and initial data
+│
+├── 📁 includes/                       # Core system files
+│   ├── 📄 auth.php                   # Authentication system
+│   ├── 📄 config.php                 # Configuration settings
+│   ├── 📄 db_connection.php          # Database connection
+│   ├── 📄 footer.php                 # Footer template
+│   ├── 📄 functions.php              # Core business logic
+│   └── 📄 header.php                 # Header template
+│
+├── 📁 tests/                          # Test files
+│   ├── 📄 test_auth.php              # Authentication tests
+│   ├── 📄 test_books.php             # Book management tests
+│   ├── 📄 test_borrow.php            # Borrowing tests
+│   └── 📄 test_returns.php           # Return tests
+│
+├── 📄 .git/                           # Git repository data
+├── 📄 .gitignore                      # Git ignore file (empty)
+├── 📄 README.md                       # Project documentation
+├── 📄 index.php                       # Homepage
+├── 📄 login.php                       # User login
+├── 📄 logout.php                      # User logout
+├── 📄 register.php                    # User registration
+├── 📄 profile.php                     # User profile
+├── 📄 search.php                      # Book search
+├── 📄 borrow_book.php                 # Book borrowing interface
+└── 📄 return_book.php                 # Book return interface
 ```
 
 ## 👥 Development Team
